@@ -1,0 +1,15 @@
+SESS_SECRET = 12345678908765432qdfghjklkjhgfer6543456789tyui
+PORT = 5000
+LINK_FRONTEND = http://localhost:4000
+URL_ORIGIN = http://localhost:4000
+
+DATABASE_USER = root
+DATABASE_PASSWORD = "password"
+DATABASE_NAME = db_absen_new
+DATABASE_HOST = localhost
+DATABASE_DIALECT = mysql
+
+HOST = mail.kopkarla.co.id
+MAIL = ara.fa@kopkarla.co.id
+MAIL_PASS = 'Komp4kl4123!@#'
+MAIL_PORT = 587
