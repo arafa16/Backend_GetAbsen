@@ -56,7 +56,7 @@ app.use(express.static("public"));
 store.sync();
 
 // jadwal penarikan data absen
-cron.schedule('*/5 * * * *', function() {
+cron.schedule('*/2 * * * *', function() {
     getDataMesinAbsenCron();
 });
 

@@ -1,6 +1,7 @@
 import { where } from "sequelize";
 import MesinAbsen from "../models/MesinAbsenModal.js";
 import { getDataByFingerByCron } from "./InOut.js";
+import { getDataMesinAbsenByCron } from "./InOutController.js";
 
 export const getMesinAbsen = async(req, res) => {
     try {
@@ -138,7 +139,9 @@ export const getDataMesinAbsenCron = async(req, res) => {
     try {
         for(let i = 0; i < findIpMesin.length; i++){
             const ip = findIpMesin[i].ipMesin;
-            await getDataByFingerByCron(ip);
+            const day = 30;
+            // await getDataByFingerByCron(ip);
+            await getDataMesinAbsenByCron(ip, day)
             // console.log(findIpMesin[i], 'find mesin absen');
         }
         

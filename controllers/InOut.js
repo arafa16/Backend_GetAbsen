@@ -2167,9 +2167,9 @@ export const getDataByFingerByCron = async(ip) => {
         const min = date.format(dateNow, 'YYYY-MM-DD HH:mm:ss');
 
         const absenMasuk = datas.filter(
-            data=>
-            data.status == 0 &&
-            data.time > min
+                data=>
+                data.status == 0 &&
+                data.time > min
             );
 
         const absenPulang = datas.filter(
@@ -2204,7 +2204,7 @@ export const getDataByFingerByCron = async(ip) => {
             const user = await findUser(data.pin);
             
             if(!user){
-                console.log('user not found 1')
+                console.log('user not found' + data.pin);
             }
             else{
 
