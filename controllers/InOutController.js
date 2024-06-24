@@ -737,6 +737,7 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
 
     // const ip = req.params.ip;
     // const day = req.params.day;
+    console.log('get mesin absen by ip', ip);
 
 
     //find user
