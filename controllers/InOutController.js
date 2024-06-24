@@ -506,7 +506,7 @@ export const getDataMesinAbsen = async(req, res) => {
         const codeShiftMasuk = [4];
 
         //submit absen masuk
-        await Promise.all(codeShiftMasuk.map(async (data)=>{
+        await Promise.all(absenShiftMasuk.map(async (data)=>{
             const timeFind = new Date(data.time);
             const timeFormat = date.format(timeFind, 'HH:mm:ss');
             const dateFormat = date.format(timeFind, 'YYYY-MM-DD');
@@ -618,7 +618,7 @@ export const getDataMesinAbsen = async(req, res) => {
         const codeShiftPulang = [5];
 
         //submit absen masuk
-        await Promise.all(codeShiftPulang.map(async (data)=>{
+        await Promise.all(absenShiftPulang.map(async (data)=>{
             const timeFind = new Date(data.time);
             const timeFormat = date.format(timeFind, 'HH:mm:ss');
             const dateFormat = date.format(timeFind, 'YYYY-MM-DD');
