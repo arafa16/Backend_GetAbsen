@@ -248,12 +248,13 @@ export const getDataMesinAbsen = async(req, res) => {
                         const findDataTidakAbsenDouble = await InOut.findAll({
                             where:{
                                 userId:inOut.userId,
-                                tanggalMulai:{
-                                    [Op.and]: {
-                                        [Op.gte]: findDate + ' 00:00:00',
-                                        [Op.lte]: findDate + ' 23:59:59',
-                                    }
-                                }
+                                tanggalMulai:findDate + ' 00:00:00',
+                                // {
+                                //     [Op.and]: {
+                                //         [Op.gte]: findDate + ' 00:00:00',
+                                //         [Op.lte]: findDate + ' 23:59:59',
+                                //     }
+                                // }
                             },
                             include:{
                                 model:TipeAbsen,
@@ -263,7 +264,9 @@ export const getDataMesinAbsen = async(req, res) => {
                             }
                         });
 
-                        await findDataTidakAbsenDouble.destroy();
+                        if(findDataTidakAbsenDouble.length > 0){
+                            await findDataTidakAbsenDouble[0].destroy();
+                        }
 
                         const jamOperasional = await findJamOperasionals({
                             timeFormat:timeFormat, 
@@ -342,12 +345,13 @@ export const getDataMesinAbsen = async(req, res) => {
                         const findDataTidakAbsenDouble = await InOut.findAll({
                             where:{
                                 userId:inOut.userId,
-                                tanggalMulai:{
-                                    [Op.and]: {
-                                        [Op.gte]: findDate + ' 00:00:00',
-                                        [Op.lte]: findDate + ' 23:59:59',
-                                    }
-                                }
+                                tanggalMulai:findDate + ' 00:00:00'
+                                // {
+                                //     [Op.and]: {
+                                //         [Op.gte]: findDate + ' 00:00:00',
+                                //         [Op.lte]: findDate + ' 23:59:59',
+                                //     }
+                                // }
                             },
                             include:{
                                 model:TipeAbsen,
@@ -357,7 +361,9 @@ export const getDataMesinAbsen = async(req, res) => {
                             }
                         });
 
-                        await findDataTidakAbsenDouble.destroy();
+                        if(findDataTidakAbsenDouble.length > 0){
+                            await findDataTidakAbsenDouble[0].destroy();
+                        }
                     }
                 }
             }
@@ -1114,12 +1120,13 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
                         const findDataTidakAbsenDouble = await InOut.findAll({
                             where:{
                                 userId:inOut.userId,
-                                tanggalMulai:{
-                                    [Op.and]: {
-                                        [Op.gte]: findDate + ' 00:00:00',
-                                        [Op.lte]: findDate + ' 23:59:59',
-                                    }
-                                }
+                                tanggalMulai: findDate + ' 00:00:00'
+                                // {
+                                //     [Op.and]: {
+                                //         [Op.gte]: findDate + ' 00:00:00',
+                                //         [Op.lte]: findDate + ' 23:59:59',
+                                //     }
+                                // }
                             },
                             include:{
                                 model:TipeAbsen,
@@ -1129,7 +1136,9 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
                             }
                         });
 
-                        await findDataTidakAbsenDouble.destroy();
+                        if(findDataTidakAbsenDouble.length > 0){
+                            await findDataTidakAbsenDouble[0].destroy();
+                        }
                     }
                 }
             }
