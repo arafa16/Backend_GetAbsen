@@ -1085,6 +1085,26 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
 
                             await findDataOutDouble[1].destroy();
                         }
+
+                        const findDataTidakAbsenDouble = await InOut.findAll({
+                            where:{
+                                userId:inOut.userId,
+                                tanggalMulai:{
+                                    [Op.and]: {
+                                        [Op.gte]: dateFormat + ' 00:00:00',
+                                        [Op.lte]: dateFormat + ' 23:59:59',
+                                    }
+                                }
+                            },
+                            include:{
+                                model:TipeAbsen,
+                                where:{
+                                    code: { [Op.in]: [11]}
+                                }
+                            }
+                        });
+
+                        await findDataTidakAbsenDouble.destroy();
                     }
                 }
             }
