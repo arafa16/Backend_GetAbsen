@@ -496,6 +496,31 @@ export const getDataMesinAbsen = async(req, res) => {
 
                             await findDataOutDouble[0].destroy();
                         }
+
+                        const findDataTidakAbsenDouble = await InOut.findAll({
+                            where:{
+                                userId:inOut.userId,
+                                tanggalMulai:{
+                                    [Op.and]: {
+                                        [Op.gte]: dateFormat + ' 00:00:00',
+                                        [Op.lte]: dateFormat + ' 23:59:59',
+                                    }
+                                }
+                            },
+                            include:{
+                                model:TipeAbsen,
+                                where:{
+                                    code: { [Op.in]: [11]}
+                                }
+                            }
+                        });
+
+                        if(findDataTidakAbsenDouble.length > 1){
+                            
+                            dataDouble.push(findDataTidakAbsenDouble, 'pulang' , findDataTidakAbsenDouble[0]);
+
+                            await findDataTidakAbsenDouble[0].destroy();
+                        }
                     }
                 }
             }
