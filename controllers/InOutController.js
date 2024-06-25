@@ -310,8 +310,8 @@ export const getDataMesinAbsen = async(req, res) => {
                                 userId:inOut.userId,
                                 tanggalMulai:{
                                     [Op.and]: {
-                                        [Op.gte]: dateFormat + ' 00:00:00',
-                                        [Op.lte]: dateFormat + ' 23:59:59',
+                                        [Op.gte]: findDate + ' 00:00:00',
+                                        [Op.lte]: findDate + ' 23:59:59',
                                     }
                                 }
                             },
@@ -1091,8 +1091,8 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
                                 userId:inOut.userId,
                                 tanggalMulai:{
                                     [Op.and]: {
-                                        [Op.gte]: dateFormat + ' 00:00:00',
-                                        [Op.lte]: dateFormat + ' 23:59:59',
+                                        [Op.gte]: findDate + ' 00:00:00',
+                                        [Op.lte]: findDate + ' 23:59:59',
                                     }
                                 }
                             },
