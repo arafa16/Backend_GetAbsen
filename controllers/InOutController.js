@@ -242,6 +242,29 @@ export const getDataMesinAbsen = async(req, res) => {
 
                     //jika belum absen
                     if(!inOut){
+                        
+                        //delete data tidak absen jika ada
+                        
+                        const findDataTidakAbsenDouble = await InOut.findAll({
+                            where:{
+                                userId:inOut.userId,
+                                tanggalMulai:{
+                                    [Op.and]: {
+                                        [Op.gte]: findDate + ' 00:00:00',
+                                        [Op.lte]: findDate + ' 23:59:59',
+                                    }
+                                }
+                            },
+                            include:{
+                                model:TipeAbsen,
+                                where:{
+                                    code: { [Op.in]: [11]}
+                                }
+                            }
+                        });
+
+                        await findDataTidakAbsenDouble.destroy();
+
                         const jamOperasional = await findJamOperasionals({
                             timeFormat:timeFormat, 
                             jamOperasionalGroupId:user.jam_operasional_group.id
@@ -305,6 +328,17 @@ export const getDataMesinAbsen = async(req, res) => {
                             }
                         });
 
+                        
+
+                        if(findDataOutDouble.length > 1){
+                            
+                            dataDouble.push(findDataOutDouble, 'masuk' , findDataOutDouble[1]);
+
+                            await findDataOutDouble[1].destroy();
+
+                            
+                        }
+
                         const findDataTidakAbsenDouble = await InOut.findAll({
                             where:{
                                 userId:inOut.userId,
@@ -324,15 +358,6 @@ export const getDataMesinAbsen = async(req, res) => {
                         });
 
                         await findDataTidakAbsenDouble.destroy();
-
-                        if(findDataOutDouble.length > 1){
-                            
-                            dataDouble.push(findDataOutDouble, 'masuk' , findDataOutDouble[1]);
-
-                            await findDataOutDouble[1].destroy();
-
-                            
-                        }
                     }
                 }
             }
