@@ -1047,6 +1047,31 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
 
                     //jika belum absen
                     if(!inOut){
+
+                        //delete data tidak masuk karena ada data masuk
+                        const findDataTidakAbsenDouble = await InOut.findAll({
+                            where:{
+                                userId:inOut.userId,
+                                tanggalMulai:findDate + ' 00:00:00'
+                                // {
+                                //     [Op.and]: {
+                                //         [Op.gte]: findDate + ' 00:00:00',
+                                //         [Op.lte]: findDate + ' 23:59:59',
+                                //     }
+                                // }
+                            },
+                            include:{
+                                model:TipeAbsen,
+                                where:{
+                                    code: { [Op.in]: [11]}
+                                }
+                            }
+                        });
+
+                        if(findDataTidakAbsenDouble.length > 0){
+                            await findDataTidakAbsenDouble[0].destroy();
+                        }
+
                         const jamOperasional = await findJamOperasionals({
                             timeFormat:timeFormat, 
                             jamOperasionalGroupId:user.jam_operasional_group.id
