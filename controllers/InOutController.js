@@ -1,5 +1,4 @@
 import InOut from "../models/InOutModal.js";
-import Pelanggaran from "../models/PelanggaranModal.js";
 import TipeAbsen from "../models/TipeAbsenModal.js";
 import Users from "../models/UsersModel.js";
 import { FingerprintSolution } from "fingerprint-solution";
@@ -96,15 +95,15 @@ export const getDataMesinAbsen = async(req, res) => {
     }
 
     //find jam operasioanl by id
-    async function findJamOperasionalById(id){
-        const response = await JamOperasional.findOne({
-            where:{
-                id:id
-            }
-        })
+    // async function findJamOperasionalById(id){
+    //     const response = await JamOperasional.findOne({
+    //         where:{
+    //             id:id
+    //         }
+    //     })
 
-        return response;
-    }
+    //     return response;
+    // }
 
     //find jam operasioanl
     async function findJamOperasionals(data){
@@ -134,19 +133,19 @@ export const getDataMesinAbsen = async(req, res) => {
         return response
     }
 
-    //find jam operasional terkahir digunakan jika tidak absen masuk
-    async function jamOperasionalsTerakhirCode(code) {
-        const response = await JamOperasional.findAll({
-            limit:1,
-            where:{
-                // tipeAbsenId:1,
-                code:code
-            },
-            order: [ [ 'createdAt', 'DESC' ]]
-        });
+    // //find jam operasional terkahir digunakan jika tidak absen masuk
+    // async function jamOperasionalsTerakhirCode(code) {
+    //     const response = await JamOperasional.findAll({
+    //         limit:1,
+    //         where:{
+    //             // tipeAbsenId:1,
+    //             code:code
+    //         },
+    //         order: [ [ 'createdAt', 'DESC' ]]
+    //     });
 
-        return response
-    }
+    //     return response
+    // }
 
     //upload absen
     async function uploadAbsen(data){
@@ -240,21 +239,22 @@ export const getDataMesinAbsen = async(req, res) => {
                         code:codeMasuk
                     });
 
+                    
+
                     //jika belum absen
                     if(!inOut){
-                        
                         //delete data tidak absen jika ada
-                        
+
                         const findDataTidakAbsenDouble = await InOut.findAll({
                             where:{
-                                userId:inOut.userId,
-                                tanggalMulai:findDate + ' 00:00:00',
-                                // {
-                                //     [Op.and]: {
-                                //         [Op.gte]: findDate + ' 00:00:00',
-                                //         [Op.lte]: findDate + ' 23:59:59',
-                                //     }
-                                // }
+                                userId:user.id,
+                                tanggalMulai:
+                                {
+                                    [Op.and]: {
+                                        [Op.gte]: dateFormat + ' 00:00:00',
+                                        [Op.lte]: dateFormat + ' 23:59:59',
+                                    }
+                                }
                             },
                             include:{
                                 model:TipeAbsen,
@@ -279,6 +279,8 @@ export const getDataMesinAbsen = async(req, res) => {
                                 jamOperasionalGroupId:user.jam_operasional_group.id
                             });
 
+                            dataDouble.push(jamOperasionalTerakhir);
+
                             await uploadAbsen({
                                 userId:user.id,
                                 tipeAbsenId:tipeAbsen.id,
@@ -301,8 +303,6 @@ export const getDataMesinAbsen = async(req, res) => {
                                 statusInoutId:1,
                                 jamOperasionalId:jamOperasional.id,
                             })
-
-                            // dataNotFound.push(dateTimeFormat, 'belum absen absen');
                         }
                     }
 
@@ -331,15 +331,12 @@ export const getDataMesinAbsen = async(req, res) => {
                             }
                         });
 
-                        
-
                         if(findDataOutDouble.length > 1){
                             
                             dataDouble.push(findDataOutDouble, 'masuk' , findDataOutDouble[1]);
 
                             await findDataOutDouble[1].destroy();
 
-                            
                         }
 
                         const findDataTidakAbsenDouble = await InOut.findAll({
@@ -369,7 +366,7 @@ export const getDataMesinAbsen = async(req, res) => {
             }
         }));
 
-        //submit absen pulang
+        // //submit absen pulang
         const codePulang = [1, 9];
 
         await Promise.all(absenPulang.map(async (data)=>{
@@ -416,7 +413,7 @@ export const getDataMesinAbsen = async(req, res) => {
                             const jamOperasionalTerakhir = await jamOperasionalsTerakhir({
                                 jamOperasionalGroupId:user.jam_operasional_group.id
                             });
-
+ 
                             const tidakAbsen = await findTipeAbsen(11);
 
                             //cek pulang dulu atau tidak
@@ -813,10 +810,7 @@ export const getDataMesinAbsen = async(req, res) => {
 
 export const getDataMesinAbsenByCron = async(ip, day) => {
 
-    // const ip = req.params.ip;
-    // const day = req.params.day;
     console.log('get mesin absen by ip', ip);
-
 
     //find user
     async function findUser(pin){
@@ -832,7 +826,6 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
             ],
             attributes:['id','absenId']
         });
-        console.log('data user', response);
         return response;
     }
 
@@ -901,15 +894,15 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
     }
 
     //find jam operasioanl by id
-    async function findJamOperasionalById(id){
-        const response = await JamOperasional.findOne({
-            where:{
-                id:id
-            }
-        })
+    // async function findJamOperasionalById(id){
+    //     const response = await JamOperasional.findOne({
+    //         where:{
+    //             id:id
+    //         }
+    //     })
 
-        return response;
-    }
+    //     return response;
+    // }
 
     //find jam operasioanl
     async function findJamOperasionals(data){
@@ -939,19 +932,19 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
         return response
     }
 
-    //find jam operasional terkahir digunakan jika tidak absen masuk
-    async function jamOperasionalsTerakhirCode(code) {
-        const response = await JamOperasional.findAll({
-            limit:1,
-            where:{
-                // tipeAbsenId:1,
-                code:code
-            },
-            order: [ [ 'createdAt', 'DESC' ]]
-        });
+    // //find jam operasional terkahir digunakan jika tidak absen masuk
+    // async function jamOperasionalsTerakhirCode(code) {
+    //     const response = await JamOperasional.findAll({
+    //         limit:1,
+    //         where:{
+    //             // tipeAbsenId:1,
+    //             code:code
+    //         },
+    //         order: [ [ 'createdAt', 'DESC' ]]
+    //     });
 
-        return response
-    }
+    //     return response
+    // }
 
     //upload absen
     async function uploadAbsen(data){
@@ -1045,20 +1038,22 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
                         code:codeMasuk
                     });
 
+                    
+
                     //jika belum absen
                     if(!inOut){
+                        //delete data tidak absen jika ada
 
-                        //delete data tidak masuk karena ada data masuk
                         const findDataTidakAbsenDouble = await InOut.findAll({
                             where:{
-                                userId:inOut.userId,
-                                tanggalMulai:findDate + ' 00:00:00'
-                                // {
-                                //     [Op.and]: {
-                                //         [Op.gte]: findDate + ' 00:00:00',
-                                //         [Op.lte]: findDate + ' 23:59:59',
-                                //     }
-                                // }
+                                userId:user.id,
+                                tanggalMulai:
+                                {
+                                    [Op.and]: {
+                                        [Op.gte]: dateFormat + ' 00:00:00',
+                                        [Op.lte]: dateFormat + ' 23:59:59',
+                                    }
+                                }
                             },
                             include:{
                                 model:TipeAbsen,
@@ -1083,6 +1078,8 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
                                 jamOperasionalGroupId:user.jam_operasional_group.id
                             });
 
+                            dataDouble.push(jamOperasionalTerakhir);
+
                             await uploadAbsen({
                                 userId:user.id,
                                 tipeAbsenId:tipeAbsen.id,
@@ -1105,8 +1102,6 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
                                 statusInoutId:1,
                                 jamOperasionalId:jamOperasional.id,
                             })
-
-                            // dataNotFound.push(dateTimeFormat, 'belum absen absen');
                         }
                     }
 
@@ -1140,12 +1135,13 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
                             dataDouble.push(findDataOutDouble, 'masuk' , findDataOutDouble[1]);
 
                             await findDataOutDouble[1].destroy();
+
                         }
 
                         const findDataTidakAbsenDouble = await InOut.findAll({
                             where:{
                                 userId:inOut.userId,
-                                tanggalMulai: findDate + ' 00:00:00'
+                                tanggalMulai:findDate + ' 00:00:00'
                                 // {
                                 //     [Op.and]: {
                                 //         [Op.gte]: findDate + ' 00:00:00',
@@ -1169,7 +1165,7 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
             }
         }));
 
-        //submit absen pulang
+        // //submit absen pulang
         const codePulang = [1, 9];
 
         await Promise.all(absenPulang.map(async (data)=>{
@@ -1216,7 +1212,7 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
                             const jamOperasionalTerakhir = await jamOperasionalsTerakhir({
                                 jamOperasionalGroupId:user.jam_operasional_group.id
                             });
-
+ 
                             const tidakAbsen = await findTipeAbsen(11);
 
                             //cek pulang dulu atau tidak
@@ -1393,7 +1389,7 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
             //cari data user
             const user = await findUser(data.pin);
             
-            // dataBersih.push(user, 'user');
+            dataBersih.push(user, 'user');
 
             if(!user){
                 // console.log('user not found 1')
@@ -1604,9 +1600,9 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
             }
         }));
 
-        console.log("success get data", ip);
+        return res.status(200).json({dataDouble});
     } catch (error) {
-        console.log(error);
+        return res.status(500).json({error});
     }
 
 }
