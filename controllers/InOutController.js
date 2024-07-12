@@ -1600,9 +1600,9 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
             }
         }));
 
-        return res.status(200).json({dataDouble});
+        console.log('success'+ip);
     } catch (error) {
-        return res.status(500).json({error});
+        console.log(error.data);
     }
 
 }
