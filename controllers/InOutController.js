@@ -111,27 +111,45 @@ export const getDataMesinAbsen = async(req, res) => {
             where:{
                 jamMasuk:{ [Op.gte]: data.timeFormat },
                 // code:data.code
-                jamOperasionalGroupId:data.jamOperasionalGroupId
+                jamOperasionalGroupId:data.jamOperasionalGroupId,
+                isActive:1
             }
         })
 
         return response;
     }
 
-    //find jam operasional terkahir digunakan jika tidak absen masuk
+    // find jam operasional terkahir digunakan jika tidak absen masuk
     async function jamOperasionalsTerakhir(data) {
         const response = await JamOperasional.findAll({
             limit:1,
             where:{
                 // tipeAbsenId:1,
                 // code:1
-                jamOperasionalGroupId:data.jamOperasionalGroupId
+                jamOperasionalGroupId:data.jamOperasionalGroupId,
+                isActive:1
             },
             order: [ [ 'createdAt', 'DESC' ]]
         });
 
         return response
     }
+
+    //find jam operasional terkahir digunakan jika tidak absen masuk
+    // async function jamOperasionalsTerakhir(data) {
+    //     const response = await JamOperasional.findAll({
+    //         limit:1,
+    //         where:{
+    //             // tipeAbsenId:1,
+    //             // code:1
+    //             jamOperasionalGroupId:data.jamOperasionalGroupId,
+    //             isActive:1,
+    //         },
+    //         order: [ [ 'createdAt', 'DESC' ]]
+    //     });
+
+    //     return response
+    // }
 
     // //find jam operasional terkahir digunakan jika tidak absen masuk
     // async function jamOperasionalsTerakhirCode(code) {
@@ -915,21 +933,6 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
         })
 
         return response;
-    }
-
-    //find jam operasional terkahir digunakan jika tidak absen masuk
-    async function jamOperasionalsTerakhir(data) {
-        const response = await JamOperasional.findAll({
-            limit:1,
-            where:{
-                // tipeAbsenId:1,
-                // code:1
-                jamOperasionalGroupId:data.jamOperasionalGroupId
-            },
-            order: [ [ 'createdAt', 'DESC' ]]
-        });
-
-        return response
     }
 
     // //find jam operasional terkahir digunakan jika tidak absen masuk
