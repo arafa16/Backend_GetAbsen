@@ -936,6 +936,21 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
     }
 
     // //find jam operasional terkahir digunakan jika tidak absen masuk
+    async function jamOperasionalsTerakhir(data) {
+        const response = await JamOperasional.findAll({
+            limit:1,
+            where:{
+                // tipeAbsenId:1,
+                // code:1
+                jamOperasionalGroupId:data.jamOperasionalGroupId,
+                isActive:1
+            },
+            order: [ [ 'createdAt', 'DESC' ]]
+        });
+
+        return response
+    }
+    
     // async function jamOperasionalsTerakhirCode(code) {
     //     const response = await JamOperasional.findAll({
     //         limit:1,
