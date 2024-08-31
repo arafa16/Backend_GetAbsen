@@ -922,12 +922,35 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
     //     return response;
     // }
 
+    //find jam operasioanl group
+    async function findJamOperasionalGroup(data){
+        const response = await JamOperasionalGroup.findOne({
+            where:{
+                code:data.code
+            }
+        })
+
+        return response;
+    }
+
     //find jam operasioanl
     async function findJamOperasionals(data){
         const response = await JamOperasional.findOne({
             where:{
                 jamMasuk:{ [Op.gte]: data.timeFormat },
                 // code:data.code
+                jamOperasionalGroupId:data.jamOperasionalGroupId
+            }
+        })
+
+        return response;
+    }
+
+    //find jam operasioanl
+    async function findJamOperasionalPulang(data){
+        const response = await JamOperasional.findOne({
+            where:{
+                jamPulang:{ [Op.lte]: data.timeFormat },
                 jamOperasionalGroupId:data.jamOperasionalGroupId
             }
         })
@@ -1055,8 +1078,6 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
                         dateFormat:dateFormat,
                         code:codeMasuk
                     });
-
-                    
 
                     //jika belum absen
                     if(!inOut){
@@ -1432,15 +1453,21 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
 
                     //jika belum absen
                     if(!inOut){
+                        const jamOperasionalGroup = await findJamOperasionalGroup({code:3});
+
+                        if(!jamOperasionalGroup){
+                            return res.status(404).json({msg: "jam operasiona group shift not set"});
+                        }
+
                         const jamOperasional = await findJamOperasionals({
                             timeFormat:timeFormat, 
-                            jamOperasionalGroupId:user.jam_operasional_group.id
+                            jamOperasionalGroupId:jamOperasionalGroup.id
                         });
 
                         //jika telat
                         if(!jamOperasional){
                             const jamOperasionalTerakhir = await jamOperasionalsTerakhir({
-                                jamOperasionalGroupId:user.jam_operasional_group.id
+                                jamOperasionalGroupId:jamOperasionalGroup.id
                             });
 
                             await uploadAbsen({
@@ -1544,15 +1571,22 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
 
                     //jika belum absen
                     if(!inOut){
+
+                        const jamOperasionalGroup = await findJamOperasionalGroup({code:3});
+
+                        if(!jamOperasionalGroup){
+                            return res.status(404).json({msg: "jam operasiona group shift not set"});
+                        }
+
                         const jamOperasional = await findJamOperasionals({
                             timeFormat:timeFormat, 
-                            jamOperasionalGroupId:user.jam_operasional_group.id
+                            jamOperasionalGroupId:jamOperasionalGroup.id
                         });
 
                         //jika telat
                         if(!jamOperasional){
                             const jamOperasionalTerakhir = await jamOperasionalsTerakhir({
-                                jamOperasionalGroupId:user.jam_operasional_group.id
+                                jamOperasionalGroupId:jamOperasionalGroup.id
                             });
 
                             await uploadAbsen({
