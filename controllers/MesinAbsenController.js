@@ -139,7 +139,7 @@ export const getDataMesinAbsenCron = async(req, res) => {
     try {
         for(let i = 0; i < findIpMesin.length; i++){
             const ip = findIpMesin[i].ipMesin;
-            const day = 30;
+            const day = 100;
             // await getDataByFingerByCron(ip);
             await getDataMesinAbsenByCron(ip, day)
             // console.log(findIpMesin[i], 'find mesin absen');
