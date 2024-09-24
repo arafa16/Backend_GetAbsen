@@ -132,7 +132,11 @@ export const getDataMesinAbsen = async(req, res) => {
 
 export const getDataMesinAbsenCron = async(req, res) => {
 
-    const findIpMesin = await MesinAbsen.findAll();
+    const findIpMesin = await MesinAbsen.findAll({
+        where:{
+            isActive:true
+        }
+    });
 
     if(!findIpMesin) return res.status(404).json({msg: "tidak ada IP mesin absen"});
     
