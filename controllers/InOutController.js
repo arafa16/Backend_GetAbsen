@@ -1011,6 +1011,8 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
 
     try {
         const dataAbsen = await FingerprintSolution.download(ip, []);
+
+        console.log(dataAbsen, 'data absen');
         
         //batas minimal date untuk filter data
         const dateNow = new Date();
