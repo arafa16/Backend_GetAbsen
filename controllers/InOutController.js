@@ -1057,8 +1057,6 @@ export const getDataMesinAbsenByCron = async(ip, day) => {
 
             //cari data user
             const user = await findUser(data.pin);
-            
-            dataBersih.push(user, 'user');
 
             if(!user){
                 // console.log('user not found 1')
